@@ -18,7 +18,12 @@ Although this might be **ILLEGAL** if used without client conscent as I said, I 
 * Use your own token / list.
 * Token joins server.
 * Token sends message & logs off.
-
+* Get Machine Name
+* Get Country Name
+* Get IP Address
+* Get Postal Address
+* Get ISP Name
+* Get Location (Coordinates)
 
 **More features will be added.**
 
