@@ -34,6 +34,7 @@ Although this might be **ILLEGAL** if used without client conscent as I said, I 
 - [ ] Perhaps adds some sleep (?)
 - [ ] Add Comments on code
 - [ ] Use region to make specific parts
+- [ ] Log file on client + Upload (?)
 
 
 
