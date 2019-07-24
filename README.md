@@ -55,4 +55,4 @@ Although this might be **ILLEGAL** if used without client conscent as I said, I 
 * I Am fairly new to coding, I never had learning courses.
 * Code may be a big mess for you, if this is the case apologies just trying to come up with something feel free to clear it up.
 * Code is NOT final, lot of cleanup has to be DONE!
-** WARNING ** Once again, I don't attend to do malicious activity I've just been creative and used my free time to build something that others might find useful.
+* **WARNING** Once again, I don't attend to do malicious activity I've just been creative and used my free time to build something that others might find useful.
