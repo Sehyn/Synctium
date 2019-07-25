@@ -5,7 +5,7 @@
 ![](/Images/FormPicture1.png)
 
 
-Video: https://streamable.com/wdff1
+Video: https://streamable.com/wdff1 (Outdated)
 
 # Synctium
 Get client information and send them to Discord server.
@@ -24,6 +24,8 @@ Although this might be **ILLEGAL** if used without client conscent as I said, I 
 * Get Postal Address
 * Get ISP Name
 * Get Location (Coordinates)
+* Get Screenshot Capture
+* Upload to IMGUR
 
 **More features will be added.**
 
@@ -31,14 +33,14 @@ Although this might be **ILLEGAL** if used without client conscent as I said, I 
 
 - [x] Working code
 - [x] Working features
-- [ ] Screenshot and upload
+- [x] Screenshot and upload
 - [ ] Recognize if a Token is dead
 - [ ] Add Token List to swap if Token dead
 - [ ] Create a builder to put custom Invite and Channel ID without code knowledge and IDE needed.
 - [ ] Fix empty strings
 - [ ] Perhaps adds some sleep (?)
-- [ ] Add Comments on code
-- [ ] Use region to make specific parts
+- [x] Add Comments on code
+- [x] Use region to make specific parts
 - [ ] Log file on client + Upload (?)
 
 
@@ -54,8 +56,10 @@ Although this might be **ILLEGAL** if used without client conscent as I said, I 
 ## Credits : 
 * Sehyn
 
+
 ## Using Library :
 * https://www.nuget.org/packages/Newtonsoft.Json/ (Add Nugget) - Web stuff
+* https://www.nuget.org/packages/Imgur.API/ (Add Nugget) - IMGUR API
 
 ## Information :
 * First of all thank you for downloading my source code.
